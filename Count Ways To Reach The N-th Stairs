@@ -1,0 +1,19 @@
+code studio
+
+// it can also be done by memoization, Tabulation...
+// this is a space optimization way of doing this problem.
+
+int countDistinctWays(int nStairs) 
+{
+    int prev=1;
+    int prev2=1;
+
+    for(int i=2;i<=nStairs;i++)
+    {
+        int curr_i=prev+prev2;
+        prev2=prev;
+        prev=curr_i;
+    }
+
+    return prev;
+}
