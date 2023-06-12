@@ -1,0 +1,136 @@
+Atcoder...https://atcoder.jp/contests/dp/tasks/dp_b
+
+
+//recurssion
+int func(int N,int k,vector<int> arr,vector<int>& dp)
+{
+    if(N==0)
+    {
+        return 0;
+    }
+
+    if(dp[N]!=-1)
+    {
+        return dp[N];
+    }
+
+    int energy=INT_MAX;
+
+    for(int j=1;j<=k;j++)
+    {
+        if(N-j>=0)
+        {
+            int step=func(N-j,k,arr,dp)+abs(arr[N]-arr[N-j]);
+            energy = min(energy,step);
+        }
+    }
+
+    return dp[N]=energy;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+    int k;
+    cin>>k;
+    vector<int> arr;
+    for(int i=0;i<n;i++)
+    {
+        int temp;
+        cin>>temp;
+        arr.push_back(temp);
+    }
+
+    int N=n-1;
+    vector<int> dp(n,-1);
+    cout<<func(N,k,arr,dp);
+
+}
+
+
+//memoization
+int func(int N,int k,vector<int> arr,vector<int>& dp)
+{
+    if(N==0)
+    {
+        return 0;
+    }
+
+    if(dp[N]!=-1)
+    {
+        return dp[N];
+    }
+
+    int energy=INT_MAX;
+
+    for(int j=1;j<=k;j++)
+    {
+        if(N-j>=0)
+        {
+            int step=func(N-j,k,arr,dp)+abs(arr[N]-arr[N-j]);
+            energy = min(energy,step);
+        }
+    }
+
+    return dp[N]=energy;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+    int k;
+    cin>>k;
+    vector<int> arr;
+    for(int i=0;i<n;i++)
+    {
+        int temp;
+        cin>>temp;
+        arr.push_back(temp);
+    }
+
+    int N=n-1;
+    vector<int> dp(n,-1);
+    cout<<func(N,k,arr,dp);
+
+}
+
+
+//tabulation
+int main()
+{
+    int n;
+    cin>>n;
+    int k;
+    cin>>k;
+    vector<int> arr;
+    for(int i=0;i<n;i++)
+    {
+        int temp;
+        cin>>temp;
+        arr.push_back(temp);
+    }
+
+    int N=n-1;
+    vector<int> dp(n,-1);
+    dp[0]=0;
+
+    for(int i=1;i<=N;i++)
+    {
+        int energy=INT_MAX;
+
+        for(int j=1;j<=k;j++)
+        {
+            if(i-j>=0)
+            {
+                int step=dp[i-j]+abs(arr[i]-arr[i-j]);
+                energy=min(step,energy);
+            }
+        }
+
+        dp[i]=energy;
+    }
+
+    cout<<dp[N];
+}
