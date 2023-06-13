@@ -1,0 +1,96 @@
+code studio:-codestudio/problems/maximum-sum-of-non-adjacent-elements
+Leetcode:- https://leetcode.com/problems/house-robber/description/
+
+// recurssive approach
+int func(int N,int pick,int not_pick,vector<int> &nums)
+{
+    if(N==0)
+    {
+        return nums[N];
+    }
+
+    if(N<0)
+    {
+        return 0;
+    }
+
+    pick = nums[N] + func(N-2,pick,not_pick,nums);
+    not_pick = 0 + func(N-1,pick,not_pick,nums);
+
+    return max(pick,not_pick);
+}
+
+int maximumNonAdjacentSum(vector<int> &nums)
+{
+    int pick=0;
+    int not_pick=0;
+    int n=nums.size();
+    return func(n-1,pick,not_pick,nums);
+}
+
+
+// Memoization approach
+int func(int N,int p,int np,vector<int>& dp,vector<int>& nums)
+{
+    if(N==0)
+    {
+        return nums[N];
+    }
+
+    if(N<0)
+    {
+        return 0;
+    }
+
+    if(dp[N]!=-1)
+    {
+        return dp[N];
+    }
+
+    p = nums[N] + func(N-2,p,np,dp,nums);
+    np = 0 + func(N-1,p,np,dp,nums);
+
+    return dp[N]=max(p,np);
+}
+
+int maximumNonAdjacentSum(vector<int> &nums)
+{
+    int n=nums.size();
+    vector<int> dp(n+1,-1);
+    int pick=0;
+    int not_pick=0;
+    return func(n-1,pick,not_pick,dp,nums);
+}
+
+
+//Tabulation approach
+int maximumNonAdjacentSum(vector<int> &nums)
+{
+    int n = nums.size();
+    vector<int> dp(n+1,-1);
+    int p=0;
+    int np=0;
+    
+    //
+    dp[0]=nums[0];
+    int neg=0;
+
+
+    for(int i=1;i<n;i++)
+    {
+        if(i>1)
+        {
+            p=nums[i]+dp[i-2];
+        }
+        else
+        {
+            p=nums[i]+neg;
+        }
+        
+        np=0+dp[i-1];
+        
+        dp[i]=max(p,np);
+    }
+
+    return dp[n-1];
+}
