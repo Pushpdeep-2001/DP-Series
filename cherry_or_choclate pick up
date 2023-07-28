@@ -1,0 +1,53 @@
+this is one of the most important question of 2d dp
+
+//recurssion
+#include <bits/stdc++.h>
+
+int func(int i1,int j1,int i2,int j2,vector<vector<int>>& grid,int n,int m)
+{
+    if( j1<0 || j1>=m || j2<0 || j2>=m )
+    {
+        return -1e9;
+    }
+
+    if(i1==n-1)
+    {
+        if(j1==j2)
+        {
+            return grid[i1][j1];
+        }
+        else{
+            return grid[i1][j1]+grid[i2][j2];
+        }
+    }
+
+    // explore all possible paths
+
+    int maxi=INT_MIN;
+
+    for(int dj1=-1;dj1<=1;dj1++)
+    {
+        for(int dj2=-1;dj2<=1;dj2++)
+        {
+            if(j1==j2)
+            {
+                maxi = max(maxi,grid[i1][j1]+func(i1+1,j1+dj1,i2+1,j2+dj2,grid,n,m));
+            }
+            else
+            {
+                maxi = max(maxi,grid[i1][j1]+grid[i2][j2]+func(i1+1,j1+dj1,i2+1,j2+dj2,grid,n,m));
+            }
+        }
+    }
+
+    return maxi;
+}
+
+int maximumChocolates(int r, int c, vector<vector<int>> &grid) 
+{
+    return func(0,0,0,c-1,grid,r,c);
+
+}
+
+
+//memoization
