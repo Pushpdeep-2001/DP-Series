@@ -1,0 +1,135 @@
+Minimum coins problem
+
+//recurssion
+int func(int i,int tar,vector<int> &num)
+{
+    if(i==0)
+    {
+        if(tar%num[i]==0)
+        {
+            return tar/num[i];
+        }
+        else
+        return 1e9;
+    }
+
+    int not_take = 0+func(i-1,tar,num);
+
+    int take = 1e9;
+
+    if(tar>=num[i])
+    {
+        take = 1+func(i,tar-num[i],num);
+    }
+
+    return min(not_take,take);
+}
+
+int minimumElements(vector<int> &num, int x)
+{
+    int n = num.size();
+    int ans = func(n-1,x,num);
+
+    if(ans>=1e9)
+    {
+        return -1;
+    }
+    else
+    return ans;
+}
+
+
+//memoization
+
+int func(int i,int tar,vector<int> &num,vector<vector<int>>& dp)
+{
+    if(i==0)
+    {
+        if(tar%num[i]==0)
+        {
+            return tar/num[i];
+        }
+        else
+        return 1e9;
+    }
+
+    if(dp[i][tar]!=-1)
+    {
+        return dp[i][tar];
+    }
+
+    int not_take = 0+func(i-1,tar,num,dp);
+
+    int take = 1e9;
+
+    if(tar>=num[i])
+    {
+        take = 1+func(i,tar-num[i],num,dp);
+    }
+
+    return dp[i][tar] = min(not_take,take);
+}
+
+int minimumElements(vector<int> &num, int x)
+{
+    int n = num.size();
+
+    vector<vector<int>> dp(n,vector<int>(x+1,-1)); 
+
+    int ans = func(n-1,x,num,dp);
+
+    
+
+    if(ans>=1e9)
+    {
+        return -1;
+    }
+    else
+    return ans;
+}
+
+
+//tabulation
+
+int minimumElements(vector<int> &num, int x)
+{
+    int n = num.size();
+    
+    vector<vector<int>> dp(n,vector<int>(x+1,0));
+    
+    for(int t=0;t<=x;t++)
+    {
+        if(t % num[0]==0)
+        {
+            dp[0][t] = t/num[0];
+        }
+        else
+        dp[0][t] = 1e9;
+    }
+
+    for(int i=1;i<n;i++)
+    {
+        for(int t=0;t<=x;t++)
+        {
+            int not_take = 0 + dp[i-1][t];
+
+            int take = 1e9;
+            
+            if(t>=num[i])
+            {
+                take = 1 + dp[i][t-num[i]];
+            }
+
+            dp[i][t] = min(not_take,take);
+        }
+    }
+
+    int ans = dp[n-1][x];
+    
+    if(ans>=1e9)
+    {
+        return -1;
+    }
+    else
+    return ans;
+}
